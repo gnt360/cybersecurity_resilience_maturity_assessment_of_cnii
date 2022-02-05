@@ -18,9 +18,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'org_id',
+        'phone_number',
+        'full_name',
         'email',
         'password',
+        'is_admin',
+        'survey_count',
+        'is_survey_onging',
+        'last_taken',
     ];
 
     /**
@@ -41,4 +47,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function organisation(){
+        $this->belongsTo(Organisation::class, 'org_id');
+    }
+
+    public function resilienceMeasureResponses()
+    {
+        return $this->hasMany(ResilienceMeasureResponse::class);
+    }
 }

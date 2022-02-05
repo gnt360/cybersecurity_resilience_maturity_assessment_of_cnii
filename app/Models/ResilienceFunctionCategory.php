@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class ResilienceFunctionCategory extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'rf_id'];
+
+    public function resilienceFunction(){
+        $this->belongsTo(ResilienceFunction::class, 'rf_id');
+    }
+
+    public function resilienceControls()
+    {
+        return $this->hasMany(ResilienceControl::class);
+    }
+
+    public function resilienceControlsByName()
+    {
+        return $this->hasMany(ResilienceControl::class)->orderBy('name');
+    }
 }

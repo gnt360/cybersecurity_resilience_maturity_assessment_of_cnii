@@ -11,4 +11,14 @@ class Sector extends Model
     protected $fillable = ['name'];
 
     public $timestamps = false;
+
+    public function organisations()
+    {
+        return $this->hasMany(Organisation::class);
+    }
+
+    public function organisationsByName()
+    {
+        return $this->hasMany(Organisation::class)->orderBy('name');
+    }
 }

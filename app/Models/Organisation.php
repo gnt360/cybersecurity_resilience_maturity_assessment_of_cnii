@@ -9,4 +9,18 @@ class Organisation extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'sector_id', 'code'];
+
+   public function sector(){
+       $this->belongsTo(Sector::class, 'sector_id');
+   }
+
+   public function users()
+   {
+       return $this->hasMany(User::class);
+   }
+
+   public function usersByName()
+   {
+       return $this->hasMany(User::class)->orderBy('full_name');
+   }
 }
