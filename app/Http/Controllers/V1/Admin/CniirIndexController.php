@@ -4,8 +4,7 @@ namespace App\Http\Controllers\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CniirIndex;
-use App\Http\Requests\StoreCniirIndexRequest;
-use App\Http\Requests\UpdateCniirIndexRequest;
+use App\Http\Requests\Request;
 
 class CniirIndexController extends Controller
 {
@@ -22,10 +21,10 @@ class CniirIndexController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCniirIndexRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCniirIndexRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -48,7 +47,7 @@ class CniirIndexController extends Controller
      * @param  \App\Models\CniirIndex  $cniirIndex
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCniirIndexRequest $request, CniirIndex $cniirIndex)
+    public function update(Request $request, CniirIndex $cniirIndex)
     {
         //
     }
