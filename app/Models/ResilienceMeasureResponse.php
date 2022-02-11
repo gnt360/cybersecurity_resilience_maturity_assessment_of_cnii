@@ -9,7 +9,7 @@ class ResilienceMeasureResponse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'rm_id', 'rms_id', 'user_id'];
+    protected $fillable = ['rm_id', 'rms_id', 'user_id'];
 
     public function resilienceMeasure(){
         return $this->belongsTo(ResilienceMeasure::class, 'rm_id');
