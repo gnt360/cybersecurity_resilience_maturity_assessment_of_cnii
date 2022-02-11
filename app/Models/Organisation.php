@@ -11,12 +11,12 @@ class Organisation extends Model
     protected $fillable = ['name', 'sector_id', 'code'];
 
    public function sector(){
-       $this->belongsTo(Sector::class, 'sector_id');
+      return $this->belongsTo(Sector::class, 'sector_id');
    }
 
    public function users()
    {
-       return $this->hasMany(User::class);
+       return $this->hasMany(User::class, 'org_id');
    }
 
    public function usersByName()

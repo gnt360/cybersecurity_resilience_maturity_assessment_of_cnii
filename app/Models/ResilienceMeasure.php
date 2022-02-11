@@ -12,7 +12,7 @@ class ResilienceMeasure extends Model
     protected $fillable = ['name', 'rc_id', 'order'];
 
     public function resilienceControl(){
-        $this->belongsTo(ResilienceControl::class, 'rc_id');
+        return  $this->belongsTo(ResilienceControl::class, 'rc_id');
     }
 
     public function resilienceMeasureScales()

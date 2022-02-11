@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\V1\Admin\UserController;
 use App\Http\Controllers\V1\Admin\SectorController;
 use App\Http\Controllers\V1\Admin\OrganisationController;
 
@@ -16,20 +18,30 @@ use App\Http\Controllers\V1\Admin\OrganisationController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 // Route::fallback(function(){
 //     return response()->json([
 //         'message' => 'Page Not Found.'], 404);
 // });
 
-Route::prefix('v1')->group(function(){
+Route::post('/register', [AuthController::class, 'register']);
 
-    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-        Route::apiResource('sector', SectorController::class);
-        Route::apiResource('organisation', OrganisationController::class);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::prefix('v1')->group(function(){
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
+            Route::get('/profile', [UserController::class, 'profile']);
+        });
+
+        Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+            Route::apiResource('sector', SectorController::class);
+            Route::apiResource('organisation', OrganisationController::class);
+        });
+
     });
 
 });

@@ -13,7 +13,7 @@ class ResilienceControl extends Model
 
 
     public function resilienceFunctionCategory(){
-        $this->belongsTo(ResilienceFunctionCategory::class, 'rfc_id');
+       return $this->belongsTo(ResilienceFunctionCategory::class, 'rfc_id');
     }
 
     public function resilienceMeasures()

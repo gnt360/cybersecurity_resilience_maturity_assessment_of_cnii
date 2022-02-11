@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Organisation;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreOrganisationRequest;
-use App\Http\Requests\UpdateOrganisationRequest;
 use App\Http\Resources\V1\OrganisationResourse;
+use App\Http\Requests\UpdateOrganisationRequest;
 
 class OrganisationController extends Controller
 {
@@ -31,7 +32,7 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::create($request->all());
 
-        return $this->successResponse(new OrganisationResourse($organisation), 'Organisation added successfully');
+        return $this->successResponse(new OrganisationResourse($organisation), 'Organisation added successfully', Response::HTTP_CREATED);
     }
 
     /**

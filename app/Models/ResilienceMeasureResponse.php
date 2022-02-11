@@ -12,15 +12,15 @@ class ResilienceMeasureResponse extends Model
     protected $fillable = ['name', 'rm_id', 'rms_id', 'user_id'];
 
     public function resilienceMeasure(){
-        $this->belongsTo(ResilienceMeasure::class, 'rm_id');
+        return $this->belongsTo(ResilienceMeasure::class, 'rm_id');
     }
 
     public function resilienceMeasureScale(){
-        $this->belongsTo(ResilienceMeasureScale::class, 'rms_id');
+        return $this->belongsTo(ResilienceMeasureScale::class, 'rms_id');
     }
 
     public function user(){
-        $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 }

@@ -12,7 +12,7 @@ class ResilienceFunctionCategory extends Model
     protected $fillable = ['name', 'rf_id'];
 
     public function resilienceFunction(){
-        $this->belongsTo(ResilienceFunction::class, 'rf_id');
+        return  $this->belongsTo(ResilienceFunction::class, 'rf_id');
     }
 
     public function resilienceControls()

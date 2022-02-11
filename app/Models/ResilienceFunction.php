@@ -13,7 +13,7 @@ class ResilienceFunction extends Model
 
 
     public function resilienceTemporalDimension(){
-        $this->belongsTo(ResilienceTemporalDimension::class, 'rtd_id');
+        return $this->belongsTo(ResilienceTemporalDimension::class, 'rtd_id');
     }
 
     public function resilienceFunctionCategorys()

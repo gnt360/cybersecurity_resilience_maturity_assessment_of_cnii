@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Sector;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSectorRequest;
-use App\Http\Requests\UpdateSectorRequest;
 use App\Http\Resources\V1\SectorResourse;
+use App\Http\Requests\UpdateSectorRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class SectorController extends Controller
 {
@@ -31,7 +32,7 @@ class SectorController extends Controller
     {
         $sector = Sector::create($request->all());
 
-        return $this->successResponse(new SectorResourse($sector), 'Sector added successfully');
+        return $this->successResponse(new SectorResourse($sector), 'Sector added successfully', Response::HTTP_CREATED);
 
     }
 
