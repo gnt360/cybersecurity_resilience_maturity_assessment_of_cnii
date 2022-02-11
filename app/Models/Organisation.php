@@ -23,4 +23,14 @@ class Organisation extends Model
    {
        return $this->hasMany(User::class)->orderBy('full_name');
    }
+
+   public function cniirIndexs()
+   {
+       return $this->hasMany(CniirIndex::class);
+   }
+
+   public function cniirIndexsByName()
+   {
+       return $this->hasMany(CniirIndex::class)->orderBy('name');
+   }
 }
