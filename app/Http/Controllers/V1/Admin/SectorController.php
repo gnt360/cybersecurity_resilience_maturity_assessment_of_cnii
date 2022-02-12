@@ -19,7 +19,6 @@ class SectorController extends Controller
     public function index()
     {
         return $this->successResponse(SectorResourse::collection(Sector::paginate()));
-
     }
 
     /**
@@ -33,7 +32,6 @@ class SectorController extends Controller
         $sector = Sector::create($request->all());
 
         return $this->successResponse(new SectorResourse($sector), 'Sector added successfully', Response::HTTP_CREATED);
-
     }
 
     /**
@@ -58,10 +56,7 @@ class SectorController extends Controller
     {
         $sector->update($request->all());
 
-        return new SectorResourse($sector);
         return $this->successResponse(new SectorResourse($sector), 'Sector updated successfully');
-
-
     }
 
     /**
@@ -74,6 +69,6 @@ class SectorController extends Controller
     {
         $sector->delete();
 
-        return response('Deleted', 204);
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

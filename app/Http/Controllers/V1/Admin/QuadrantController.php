@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Quadrant;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreQuadrantRequest;
+use App\Http\Resources\V1\QuadrantResource;
 use App\Http\Requests\UpdateQuadrantRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuadrantController extends Controller
 {
@@ -16,7 +18,7 @@ class QuadrantController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(QuadrantResource::collection(Quadrant::paginate()));
     }
 
     /**
@@ -27,7 +29,9 @@ class QuadrantController extends Controller
      */
     public function store(StoreQuadrantRequest $request)
     {
-        //
+        $quadrant = Quadrant::create($request->all());
+
+        return $this->successResponse(new QuadrantResource($quadrant), 'Quadrant added successfully', Response::HTTP_CREATED);
     }
 
     /**
@@ -38,7 +42,7 @@ class QuadrantController extends Controller
      */
     public function show(Quadrant $quadrant)
     {
-        //
+        return $this->successResponse( new QuadrantResource($quadrant));
     }
 
     /**
@@ -50,7 +54,9 @@ class QuadrantController extends Controller
      */
     public function update(UpdateQuadrantRequest $request, Quadrant $quadrant)
     {
-        //
+        $quadrant->update($request->all());
+
+        return $this->successResponse(new QuadrantResource($quadrant), 'Quadrant updated successfully');
     }
 
     /**
@@ -61,6 +67,8 @@ class QuadrantController extends Controller
      */
     public function destroy(Quadrant $quadrant)
     {
-        //
+        $quadrant->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

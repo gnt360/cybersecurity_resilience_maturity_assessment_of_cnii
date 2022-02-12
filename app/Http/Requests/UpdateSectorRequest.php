@@ -30,8 +30,6 @@ class UpdateSectorRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:2|unique:sectors',
-            'sector_id' => 'required|integer|exists:sectors,id',
-            'code' => 'unique:organisations'
         ];
     }
 

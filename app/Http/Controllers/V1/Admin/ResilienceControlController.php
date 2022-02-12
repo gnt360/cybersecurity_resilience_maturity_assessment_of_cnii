@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\ResilienceControl;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceControlRequest;
+use App\Http\Resources\V1\ResilienceControlResource;
 use App\Http\Requests\UpdateResilienceControlRequest;
 
 class ResilienceControlController extends Controller
@@ -16,7 +18,7 @@ class ResilienceControlController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(ResilienceControlResource::collection(ResilienceControl::paginate()));
     }
 
     /**
@@ -27,7 +29,9 @@ class ResilienceControlController extends Controller
      */
     public function store(StoreResilienceControlRequest $request)
     {
-        //
+        $resilienceControl = ResilienceControl::create($request->all());
+
+        return $this->successResponse(new ResilienceControlResource($resilienceControl), 'Resilience control added successfully', Response::HTTP_CREATED);
     }
 
     /**
@@ -38,7 +42,7 @@ class ResilienceControlController extends Controller
      */
     public function show(ResilienceControl $resilienceControl)
     {
-        //
+        return $this->successResponse(new ResilienceControlResource($resilienceControl));
     }
 
     /**
@@ -50,7 +54,9 @@ class ResilienceControlController extends Controller
      */
     public function update(UpdateResilienceControlRequest $request, ResilienceControl $resilienceControl)
     {
-        //
+        $resilienceControl->update($request->all());
+
+        return $this->successResponse(new ResilienceControlResource($resilienceControl), 'Resilience control updated successfully');
     }
 
     /**
@@ -61,6 +67,8 @@ class ResilienceControlController extends Controller
      */
     public function destroy(ResilienceControl $resilienceControl)
     {
-        //
+        $resilienceControl->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\ResilienceMeasure;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceMeasureRequest;
+use App\Http\Resources\V1\ResilienceMeasureResource;
 use App\Http\Requests\UpdateResilienceMeasureRequest;
 
 class ResilienceMeasureController extends Controller
@@ -16,7 +18,7 @@ class ResilienceMeasureController extends Controller
      */
     public function index()
     {
-        //
+      return $this->successResponse(ResilienceMeasureResource::collection(ResilienceMeasure::paginate()));
     }
 
     /**
@@ -27,7 +29,9 @@ class ResilienceMeasureController extends Controller
      */
     public function store(StoreResilienceMeasureRequest $request)
     {
-        //
+        $resilienceMeasure = ResilienceMeasure::create($request->all());
+
+        return $this->successResponse(new ResilienceMeasureResource($resilienceMeasure), 'Resilience measure added successfully', Response::HTTP_CREATED);
     }
 
     /**
@@ -38,7 +42,7 @@ class ResilienceMeasureController extends Controller
      */
     public function show(ResilienceMeasure $resilienceMeasure)
     {
-        //
+        return $this->successResponse(new ResilienceMeasureResource($resilienceMeasure));
     }
 
     /**
@@ -50,7 +54,9 @@ class ResilienceMeasureController extends Controller
      */
     public function update(UpdateResilienceMeasureRequest $request, ResilienceMeasure $resilienceMeasure)
     {
-        //
+        $resilienceMeasure->update($request->all());
+
+        return $this->successResponse(new ResilienceMeasureResource($resilienceMeasure), 'Resilience measure updated successfully');
     }
 
     /**
@@ -61,6 +67,8 @@ class ResilienceMeasureController extends Controller
      */
     public function destroy(ResilienceMeasure $resilienceMeasure)
     {
-        //
+        $resilienceMeasure->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

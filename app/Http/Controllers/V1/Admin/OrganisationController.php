@@ -70,6 +70,6 @@ class OrganisationController extends Controller
     {
         $organisation->delete();
 
-        return response('Deleted', 204);
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

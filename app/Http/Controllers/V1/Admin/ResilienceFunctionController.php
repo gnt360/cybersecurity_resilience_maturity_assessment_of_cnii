@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\V1\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\ResilienceFunction;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceFunctionRequest;
+use App\Http\Resources\V1\ResilienceFunctionResource;
 use App\Http\Requests\UpdateResilienceFunctionRequest;
 
 class ResilienceFunctionController extends Controller
@@ -16,7 +18,7 @@ class ResilienceFunctionController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(ResilienceFunctionResource::collection(ResilienceFunction::paginate()));
     }
 
     /**
@@ -27,7 +29,9 @@ class ResilienceFunctionController extends Controller
      */
     public function store(StoreResilienceFunctionRequest $request)
     {
-        //
+        $resilienceFunction = ResilienceFunction::create($request->all());
+
+        return $this->successResponse(new ResilienceFunctionResource($resilienceFunction), 'Resilience function added successfully', Response::HTTP_CREATED);
     }
 
     /**
@@ -38,7 +42,7 @@ class ResilienceFunctionController extends Controller
      */
     public function show(ResilienceFunction $resilienceFunction)
     {
-        //
+        return $this->successResponse(new ResilienceFunctionResource($resilienceFunction));
     }
 
     /**
@@ -50,7 +54,9 @@ class ResilienceFunctionController extends Controller
      */
     public function update(UpdateResilienceFunctionRequest $request, ResilienceFunction $resilienceFunction)
     {
-        //
+        $resilienceFunction->update($request->all());
+
+        return $this->successResponse(new ResilienceFunctionResource($resilienceFunction), 'Resilience function updated successfully');
     }
 
     /**
@@ -61,6 +67,8 @@ class ResilienceFunctionController extends Controller
      */
     public function destroy(ResilienceFunction $resilienceFunction)
     {
-        //
+        $resilienceFunction->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

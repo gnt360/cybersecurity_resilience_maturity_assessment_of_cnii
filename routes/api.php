@@ -3,17 +3,18 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\V1\Admin\CniirIndexController;
 use App\Http\Controllers\V1\Admin\UserController;
 use App\Http\Controllers\V1\Admin\SectorController;
-use App\Http\Controllers\V1\Admin\OrganisationController;
 use App\Http\Controllers\V1\Admin\QuadrantController;
+use App\Http\Controllers\V1\Admin\CniirIndexController;
+use App\Http\Controllers\V1\Admin\OrganisationController;
 use App\Http\Controllers\V1\Admin\ResilienceControlController;
-use App\Http\Controllers\V1\Admin\ResilienceFunctionCategoryController;
-use App\Http\Controllers\V1\Admin\ResilienceFunctionController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureController;
-use App\Http\Controllers\V1\Admin\ResilienceMeasureResponseController;
+use App\Http\Controllers\V1\Admin\ResilienceFunctionController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureScaleController;
+use App\Http\Controllers\V1\Admin\ResilienceMeasureResponseController;
+use App\Http\Controllers\V1\Admin\ResilienceFunctionCategoryController;
+use App\Http\Controllers\V1\Admin\ResilienceTemporalDimensionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,15 +46,15 @@ Route::prefix('v1')->group(function(){
         Route::group(['prefix' => 'admin', 'middleware' => 'is_admin', 'as' => 'admin.'], function() {
             Route::apiResource('sector', SectorController::class);
             Route::apiResource('organisation', OrganisationController::class);
-            Route::apiResource('rtd', ResilienceTemporalDimensionController::class);
-            Route::apiResource('rf', ResilienceFunctionController::class);
-            Route::apiResource('rfc', ResilienceFunctionCategoryController::class);
-            Route::apiResource('rc', ResilienceControlController::class);
-            Route::apiResource('rm', ResilienceMeasureController::class);
-            Route::apiResource('rms', ResilienceMeasureScaleController::class);
-            Route::apiResource('rmr', ResilienceMeasureResponseController::class);
+            Route::apiResource('resilienceTemporalDimension', ResilienceTemporalDimensionController::class);
+            Route::apiResource('resilienceFunction', ResilienceFunctionController::class);
+            Route::apiResource('resilienceFunctionCategory', ResilienceFunctionCategoryController::class);
+            Route::apiResource('resilienceControl', ResilienceControlController::class);
+            Route::apiResource('resilienceMeasure', ResilienceMeasureController::class);
+            Route::apiResource('resilienceMeasureScale', ResilienceMeasureScaleController::class);
+            Route::apiResource('resilienceMeasureResponse', ResilienceMeasureResponseController::class);
             Route::apiResource('quadrant', QuadrantController::class);
-            Route::apiResource('cniir-index', CniirIndexController::class);
+            Route::apiResource('cniirIndex', CniirIndexController::class);
         });
 
 

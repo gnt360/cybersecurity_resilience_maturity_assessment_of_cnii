@@ -4,8 +4,10 @@ namespace App\Http\Controllers\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResilienceMeasureScale;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceMeasureScaleRequest;
 use App\Http\Requests\UpdateResilienceMeasureScaleRequest;
+use App\Http\Resources\V1\ResilienceMeasureScaleResource;
 
 class ResilienceMeasureScaleController extends Controller
 {
@@ -16,7 +18,7 @@ class ResilienceMeasureScaleController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(ResilienceMeasureScaleResource::collection(ResilienceMeasureScale::paginate()));
     }
 
     /**
@@ -27,7 +29,10 @@ class ResilienceMeasureScaleController extends Controller
      */
     public function store(StoreResilienceMeasureScaleRequest $request)
     {
-        //
+        $resilienceMeasureScale = ResilienceMeasureScale::create($request->all());
+
+        return $this->successResponse(new ResilienceMeasureScaleResource($resilienceMeasureScale), 'Resilience measure scale added successfully', Response::HTTP_CREATED);
+
     }
 
     /**
@@ -38,7 +43,7 @@ class ResilienceMeasureScaleController extends Controller
      */
     public function show(ResilienceMeasureScale $resilienceMeasureScale)
     {
-        //
+        return $this->successResponse(new ResilienceMeasureScaleResource($resilienceMeasureScale));
     }
 
     /**
@@ -50,7 +55,10 @@ class ResilienceMeasureScaleController extends Controller
      */
     public function update(UpdateResilienceMeasureScaleRequest $request, ResilienceMeasureScale $resilienceMeasureScale)
     {
-        //
+        $resilienceMeasureScale->update($request->all());
+
+        return $this->successResponse(new ResilienceMeasureScaleResource($resilienceMeasureScale), 'Resilience measure scale updated successfully');
+
     }
 
     /**
@@ -61,6 +69,8 @@ class ResilienceMeasureScaleController extends Controller
      */
     public function destroy(ResilienceMeasureScale $resilienceMeasureScale)
     {
-        //
+        $resilienceMeasureScale->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

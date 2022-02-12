@@ -4,7 +4,9 @@ namespace App\Http\Controllers\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResilienceTemporalDimension;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceTemporalDimensionRequest;
+use App\Http\Resources\V1\ResilienceTemporalDimensionResource;
 use App\Http\Requests\UpdateResilienceTemporalDimensionRequest;
 
 class ResilienceTemporalDimensionController extends Controller
@@ -16,7 +18,7 @@ class ResilienceTemporalDimensionController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(ResilienceTemporalDimensionResource::collection(ResilienceTemporalDimension::paginate()));
     }
 
     /**
@@ -27,7 +29,9 @@ class ResilienceTemporalDimensionController extends Controller
      */
     public function store(StoreResilienceTemporalDimensionRequest $request)
     {
-        //
+        $rtd = ResilienceTemporalDimension::create($request->all());
+
+        return $this->successResponse(new ResilienceTemporalDimensionResource($rtd), 'Resilience temporal dimension added successfully',  Response::HTTP_CREATED);
     }
 
     /**
@@ -38,7 +42,7 @@ class ResilienceTemporalDimensionController extends Controller
      */
     public function show(ResilienceTemporalDimension $resilienceTemporalDimension)
     {
-        //
+        return $this->successResponse( new ResilienceTemporalDimensionResource($resilienceTemporalDimension));
     }
 
     /**
@@ -50,7 +54,9 @@ class ResilienceTemporalDimensionController extends Controller
      */
     public function update(UpdateResilienceTemporalDimensionRequest $request, ResilienceTemporalDimension $resilienceTemporalDimension)
     {
-        //
+        $resilienceTemporalDimension->update($request->all());
+
+        return $this->successResponse(new ResilienceTemporalDimensionResource($resilienceTemporalDimension), 'Resilience temporal dimension updated successfully');
     }
 
     /**
@@ -61,6 +67,8 @@ class ResilienceTemporalDimensionController extends Controller
      */
     public function destroy(ResilienceTemporalDimension $resilienceTemporalDimension)
     {
-        //
+        $resilienceTemporalDimension->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

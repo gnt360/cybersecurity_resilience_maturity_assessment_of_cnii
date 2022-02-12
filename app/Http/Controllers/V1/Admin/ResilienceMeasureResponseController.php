@@ -4,7 +4,9 @@ namespace App\Http\Controllers\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResilienceMeasureResponse;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceMeasureResponseRequest;
+use App\Http\Resources\V1\ResilienceMeasureResponseResource;
 use App\Http\Requests\UpdateResilienceMeasureResponseRequest;
 
 class ResilienceMeasureResponseController extends Controller
@@ -16,7 +18,7 @@ class ResilienceMeasureResponseController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(ResilienceMeasureResponseResource::collection(ResilienceMeasureResponse::paginate()));
     }
 
     /**
@@ -27,7 +29,10 @@ class ResilienceMeasureResponseController extends Controller
      */
     public function store(StoreResilienceMeasureResponseRequest $request)
     {
-        //
+        $resilienceMeasureResponse = ResilienceMeasureResponse::create($request->all());
+
+        return $this->successResponse(new ResilienceMeasureResponseResource($resilienceMeasureResponse), 'Resilience measure response added successfully', Response::HTTP_CREATED);
+
     }
 
     /**
@@ -38,7 +43,7 @@ class ResilienceMeasureResponseController extends Controller
      */
     public function show(ResilienceMeasureResponse $resilienceMeasureResponse)
     {
-        //
+        return $this->successResponse(new ResilienceMeasureResponseResource($resilienceMeasureResponse));
     }
 
     /**
@@ -50,7 +55,10 @@ class ResilienceMeasureResponseController extends Controller
      */
     public function update(UpdateResilienceMeasureResponseRequest $request, ResilienceMeasureResponse $resilienceMeasureResponse)
     {
-        //
+        $resilienceMeasureResponse->update($request->all());
+
+        return $this->successResponse(new ResilienceMeasureResponseResource($resilienceMeasureResponse), 'Resilience measure response updated successfully');
+
     }
 
     /**
@@ -61,6 +69,8 @@ class ResilienceMeasureResponseController extends Controller
      */
     public function destroy(ResilienceMeasureResponse $resilienceMeasureResponse)
     {
-        //
+        $resilienceMeasureResponse->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }

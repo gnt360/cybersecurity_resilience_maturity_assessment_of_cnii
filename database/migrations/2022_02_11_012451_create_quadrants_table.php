@@ -16,8 +16,8 @@ class CreateQuadrantsTable extends Migration
         Schema::create('quadrants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('low_limit', 3,2);
-            $table->decimal('upper_limit', 3,2);
+            $table->decimal('low_limit', 5,2);
+            $table->decimal('upper_limit', 5,2);
             $table->timestamps();
         });
     }

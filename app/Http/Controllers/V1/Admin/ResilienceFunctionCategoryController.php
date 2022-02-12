@@ -4,7 +4,9 @@ namespace App\Http\Controllers\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResilienceFunctionCategory;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreResilienceFunctionCategoryRequest;
+use App\Http\Resources\V1\ResilienceFunctionCategoryResource;
 use App\Http\Requests\UpdateResilienceFunctionCategoryRequest;
 
 class ResilienceFunctionCategoryController extends Controller
@@ -16,7 +18,7 @@ class ResilienceFunctionCategoryController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(ResilienceFunctionCategoryResource::collection(ResilienceFunctionCategory::paginate()));
     }
 
     /**
@@ -27,7 +29,9 @@ class ResilienceFunctionCategoryController extends Controller
      */
     public function store(StoreResilienceFunctionCategoryRequest $request)
     {
-        //
+        $resilienceFunctionCategory = ResilienceFunctionCategory::create($request->all());
+
+        return $this->successResponse(new ResilienceFunctionCategoryResource($resilienceFunctionCategory), 'Resilience function category added successfully', Response::HTTP_CREATED);
     }
 
     /**
@@ -38,7 +42,7 @@ class ResilienceFunctionCategoryController extends Controller
      */
     public function show(ResilienceFunctionCategory $resilienceFunctionCategory)
     {
-        //
+        return $this->successResponse(new ResilienceFunctionCategoryResource($resilienceFunctionCategory));
     }
 
     /**
@@ -50,7 +54,9 @@ class ResilienceFunctionCategoryController extends Controller
      */
     public function update(UpdateResilienceFunctionCategoryRequest $request, ResilienceFunctionCategory $resilienceFunctionCategory)
     {
-        //
+        $resilienceFunctionCategory->update($request->all());
+
+        return $this->successResponse(new ResilienceFunctionCategoryResource($resilienceFunctionCategory), 'Resilience function category updated successfully');
     }
 
     /**
@@ -61,6 +67,8 @@ class ResilienceFunctionCategoryController extends Controller
      */
     public function destroy(ResilienceFunctionCategory $resilienceFunctionCategory)
     {
-        //
+        $resilienceFunctionCategory->delete();
+
+        return response('Deleted', Response::HTTP_NO_CONTENT);
     }
 }
