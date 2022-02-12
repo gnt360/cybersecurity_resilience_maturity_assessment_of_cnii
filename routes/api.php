@@ -39,13 +39,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::prefix('v1')->group(function(){
+
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
-        Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
-            Route::get('/profile', [UserController::class, 'profile']);
-        });
-
-        Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+        Route::group(['prefix' => 'admin', 'middleware' => 'is_admin', 'as' => 'admin.'], function() {
             Route::apiResource('sector', SectorController::class);
             Route::apiResource('organisation', OrganisationController::class);
             Route::apiResource('rtd', ResilienceTemporalDimensionController::class);
@@ -57,6 +54,11 @@ Route::prefix('v1')->group(function(){
             Route::apiResource('rmr', ResilienceMeasureResponseController::class);
             Route::apiResource('quadrant', QuadrantController::class);
             Route::apiResource('cniir-index', CniirIndexController::class);
+        });
+
+
+         Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
+            Route::get('/profile', [UserController::class, 'profile']);
         });
 
     });
