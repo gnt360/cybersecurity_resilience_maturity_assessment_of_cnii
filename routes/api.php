@@ -55,6 +55,13 @@ Route::prefix('v1')->group(function(){
             Route::apiResource('resilienceMeasureResponse', ResilienceMeasureResponseController::class);
             Route::apiResource('quadrant', QuadrantController::class);
             Route::apiResource('cniirIndex', CniirIndexController::class);
+
+            Route::get('/resilienceFunctionByRtd/{id}/', [ResilienceFunctionController::class, 'getRFbyRTDid']);
+            Route::get('/resilienceFunctionCategoryByRf/{id}/', [ResilienceFunctionCategoryController::class, 'getRFCbyRFid']);
+            Route::get('/resilienceControlByRfc/{id}/', [ResilienceControlController::class, 'getRCbyRFCid']);
+            Route::get('/resilienceMeasureByRc/{id}/', [ResilienceMeasureController::class, 'getRMbyRCid']);
+            Route::get('/resilienceMeasureScaleByRm/{id}/', [ResilienceMeasureScaleController::class, 'getRMSbyRMid']);
+
         });
 
 

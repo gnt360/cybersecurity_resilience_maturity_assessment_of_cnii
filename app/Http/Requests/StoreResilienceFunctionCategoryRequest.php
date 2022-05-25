@@ -29,7 +29,7 @@ class StoreResilienceFunctionCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|unique:resilience_function_categories',
+            'name' => 'required|string|min:2',
             'rf_id' => 'required|integer|exists:resilience_functions,id'
         ];
     }
@@ -46,7 +46,6 @@ class StoreResilienceFunctionCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Resilience function category name is required',
-            'name.unique' => 'Resilience function category name already exist',
             'name.min' => 'Enter a valid resilience function category name',
             'name.string' => 'Resilience function name must be a string',
             'rf_id.required' => 'Select a resilience function',

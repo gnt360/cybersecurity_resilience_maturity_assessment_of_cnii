@@ -45,6 +45,16 @@ class ResilienceFunctionCategoryController extends Controller
         return $this->successResponse(new ResilienceFunctionCategoryResource($resilienceFunctionCategory));
     }
 
+    public function getRFCbyRFid(int $rfId)
+    {
+        if($rfId < 0){
+            return $this->errorResponse(null, 'Please enter a valid Resilience Function Id', Response::HTTP_BAD_REQUEST);
+        }
+
+        $resilienceFunctionCategory = ResilienceFunctionCategory::where('rf_id', $rfId)->get();
+        return $this->successResponse(ResilienceFunctionCategoryResource::collection($resilienceFunctionCategory));
+    }
+
     /**
      * Update the specified resource in storage.
      *

@@ -45,6 +45,15 @@ class ResilienceControlController extends Controller
         return $this->successResponse(new ResilienceControlResource($resilienceControl));
     }
 
+    public function getRCbyRFCid(int $rfcId)
+    {
+        if($rfcId < 0){
+            return $this->errorResponse(null, 'Please enter a valid Resilience Function Category Id', Response::HTTP_BAD_REQUEST);
+        }
+
+        $resilienceControl = ResilienceControl::where('rfc_id', $rfcId)->get();
+        return $this->successResponse(ResilienceControlResource::collection($resilienceControl));
+    }
     /**
      * Update the specified resource in storage.
      *

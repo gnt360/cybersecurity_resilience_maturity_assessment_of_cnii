@@ -46,6 +46,15 @@ class ResilienceMeasureScaleController extends Controller
         return $this->successResponse(new ResilienceMeasureScaleResource($resilienceMeasureScale));
     }
 
+    public function getRMSbyRMid(int $rmId)
+    {
+        if($rmId < 0){
+            return $this->errorResponse(null, 'Please enter a valid Resilience Measure Id', Response::HTTP_BAD_REQUEST);
+        }
+
+        $resilienceMeasureScale = ResilienceMeasureScale::where('rm_id', $rmId)->get();
+        return $this->successResponse(ResilienceMeasureScaleResource::collection($resilienceMeasureScale));
+    }
     /**
      * Update the specified resource in storage.
      *

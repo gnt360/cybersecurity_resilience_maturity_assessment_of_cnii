@@ -45,6 +45,16 @@ class ResilienceFunctionController extends Controller
         return $this->successResponse(new ResilienceFunctionResource($resilienceFunction));
     }
 
+    public function getRFbyRTDid(int $rtdId)
+    {
+
+        if($rtdId < 0){
+            return $this->errorResponse(null, 'Please enter a valid Resilience Measure Id', Response::HTTP_BAD_REQUEST);
+        }
+
+        $resilienceFunction = ResilienceFunction::where('rtd_id', $rtdId)->get();
+        return $this->successResponse(ResilienceFunctionResource::collection($resilienceFunction));
+    }
     /**
      * Update the specified resource in storage.
      *
