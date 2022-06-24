@@ -18,7 +18,7 @@ class CreateResilienceMeasureScalesTable extends Migration
             $table->foreignId('rm_id')->constrained('resilience_measures');
             $table->string('name');
             $table->integer('weight');
-            $table->integer('order')->unique();
+            $table->integer('order');
             $table->timestamps();
         });
     }

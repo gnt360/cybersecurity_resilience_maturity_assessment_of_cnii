@@ -29,7 +29,7 @@ class StoreResilienceMeasureScaleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|unique:resilience_measure_scales',
+            'name' => 'required|string|min:2',
             'weight' => 'required|numeric',
             'order' => 'required|integer',
             'rm_id' => 'required|integer|exists:resilience_measures,id'
@@ -48,11 +48,9 @@ class StoreResilienceMeasureScaleRequest extends FormRequest
     {
         return [
             'name.required' => 'Resilience measure scale name is required',
-            'name.unique' => 'Resilience measure scale name already exist',
             'name.min' => 'Enter a valid resilience measure scale name',
             'name.string' => 'Resilience measure scale name must be a string',
             'order.integer' => 'Order must be an integer',
-            'order.required' => 'Order is required',
             'order.numeric' => 'Order must be a number',
             'order.required' => 'Order is required',
             'rm_id.required' => 'Select a resilience measure',
