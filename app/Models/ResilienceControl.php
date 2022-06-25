@@ -18,7 +18,7 @@ class ResilienceControl extends Model
 
     public function resilienceMeasures()
     {
-        return $this->hasMany(ResilienceMeasure::class);
+        return $this->hasMany(ResilienceMeasure::class, 'rc_id');
     }
 
     public function resilienceMeasuresByName()

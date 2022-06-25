@@ -17,7 +17,7 @@ class ResilienceFunctionCategory extends Model
 
     public function resilienceControls()
     {
-        return $this->hasMany(ResilienceControl::class);
+        return $this->hasMany(ResilienceControl::class,  'rfc_id');
     }
 
     public function resilienceControlsByName()

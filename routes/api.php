@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\V1\Admin\UserController;
+use App\Http\Controllers\V1\User\SurveyController;
 use App\Http\Controllers\V1\Admin\SectorController;
 use App\Http\Controllers\V1\Admin\QuadrantController;
 use App\Http\Controllers\V1\Admin\CniirIndexController;
@@ -67,7 +68,10 @@ Route::prefix('v1')->group(function(){
 
          Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
             Route::get('/profile', [UserController::class, 'profile']);
+            Route::get('/survey/{rf_id?}', [SurveyController::class, 'getMeasuresWithScales']);
         });
+
+
 
     });
 
