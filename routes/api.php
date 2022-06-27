@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function(){
          Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
             Route::get('/profile', [UserController::class, 'profile']);
             Route::get('/survey/{rf_id?}', [SurveyController::class, 'getMeasuresWithScales']);
+            Route::post('/survey/storeResponse', [SurveyController::class, 'storeResponse']);
         });
 
 
