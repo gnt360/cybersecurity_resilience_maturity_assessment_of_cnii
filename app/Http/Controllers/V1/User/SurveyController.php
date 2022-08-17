@@ -8,10 +8,12 @@ use App\Models\ResilienceMeasure;
 use App\Models\ResilienceFunction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\CniirIndexResource;
 use App\Models\ResilienceMeasureResponse;
 use App\Models\ResilienceFunctionCategory;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\V1\Survey\ResilienceFunctionResource;
+use App\Models\CniirIndex;
 
 class SurveyController extends Controller
 {
@@ -73,26 +75,12 @@ class SurveyController extends Controller
         return $this->successResponse(null, 'Responses added successfully', Response::HTTP_CREATED);
     }
 
-    // public function getMeasureByRF(string $rf){
 
-    //     $rfcIds = self::getIdsOfRFCategoriesByRFName($rf);
+    public function showCniirIndex($user_id)
+    {
+        $data = CniirIndex::where('user_id', $user_id)->latest()->first();
 
-    //     return ResilienceMeasure::whereIn('rc_id', self::getIdsOfRControlsByRFCategoriesId($rfcIds))
-    //             ->with('resilienceMeasureScales')
-    //             ->with('resilienceControl')->get();
-    // }
-
-
-    // private static function getIdsOfRFCategoriesByRFName(string $rf){
-
-    //     $rfId  = ResilienceFunction::where(['name' => $rf])->pluck('id');
-
-    //     return ResilienceFunctionCategory::whereIn('rf_id', $rfId)->pluck('id');
-    // }
-
-    // private static function getIdsOfRControlsByRFCategoriesId($rfcIds){
-
-    //     return ResilienceControl::whereIn('rfc_id', $rfcIds)->pluck('id');
-    // }
+        return $this->successResponse(new CniirIndexResource($data));
+    }
 
 }

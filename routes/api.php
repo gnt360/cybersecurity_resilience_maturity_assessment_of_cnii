@@ -8,6 +8,7 @@ use App\Http\Controllers\V1\User\SurveyController;
 use App\Http\Controllers\V1\Admin\SectorController;
 use App\Http\Controllers\V1\Admin\QuadrantController;
 use App\Http\Controllers\V1\Admin\CniirIndexController;
+use App\Http\Controllers\V1\Admin\ComputationController;
 use App\Http\Controllers\V1\Admin\OrganisationController;
 use App\Http\Controllers\V1\Admin\ResilienceControlController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\V1\Admin\ResilienceMeasureScaleController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureResponseController;
 use App\Http\Controllers\V1\Admin\ResilienceFunctionCategoryController;
 use App\Http\Controllers\V1\Admin\ResilienceTemporalDimensionController;
+use App\Models\Organisation;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +64,7 @@ Route::prefix('v1')->group(function(){
             Route::get('/resilienceControlByRfc/{id}/', [ResilienceControlController::class, 'getRCbyRFCid']);
             Route::get('/resilienceMeasureByRc/{id}/', [ResilienceMeasureController::class, 'getRMbyRCid']);
             Route::get('/resilienceMeasureScaleByRm/{id}/', [ResilienceMeasureScaleController::class, 'getRMSbyRMid']);
+            Route::get('/cIndex/consolidated', [CniirIndexController::class, 'getConsolidatedIndex']);
 
         });
 
@@ -70,11 +73,15 @@ Route::prefix('v1')->group(function(){
             Route::get('/profile', [UserController::class, 'profile']);
             Route::get('/survey/{rf_id?}', [SurveyController::class, 'getMeasuresWithScales']);
             Route::post('/survey/storeResponse', [SurveyController::class, 'storeResponse']);
+            Route::get('/cniirIndex/computation/{user_id}', [CniirIndexController::class, 'cniirIndexComputation']);
+            Route::get('/cniirIndex/show/{user_id}', [SurveyController::class, 'showCniirIndex']);
         });
 
-
-
     });
+
+    Route::get('/sectors', [SectorController::class, 'index']);
+    Route::get('/organisations', [OrganisationController::class, 'index']);
+    Route::get('/organisationsBySectorID/{sector_id}', [OrganisationController::class, 'organisationsBySectorID']);
 
 });
 

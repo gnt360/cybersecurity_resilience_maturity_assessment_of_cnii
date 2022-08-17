@@ -72,4 +72,11 @@ class OrganisationController extends Controller
 
         return response('Deleted', Response::HTTP_NO_CONTENT);
     }
+
+    public function organisationsBySectorID($sector_id)
+    {
+        $data = Organisation::where('sector_id', $sector_id)->get();
+
+        return $this->successResponse(OrganisationResourse::collection($data));
+    }
 }
