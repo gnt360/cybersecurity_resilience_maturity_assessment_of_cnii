@@ -18,7 +18,7 @@ class ResilienceControlController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(ResilienceControlResource::collection(ResilienceControl::paginate()));
+        return $this->successResponse(ResilienceControlResource::collection(ResilienceControl::all()));
     }
 
     /**

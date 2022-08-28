@@ -21,7 +21,7 @@ class CniirIndexController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(CniirIndexResource::collection(CniirIndex::paginate()));
+        return $this->successResponse(CniirIndexResource::collection(CniirIndex::all()));
     }
 
     public function getConsolidatedIndex(){

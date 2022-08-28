@@ -18,7 +18,7 @@ class ResilienceMeasureResponseController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(ResilienceMeasureResponseResource::collection(ResilienceMeasureResponse::paginate()));
+        return $this->successResponse(ResilienceMeasureResponseResource::collection(ResilienceMeasureResponse::all()));
     }
 
     /**
