@@ -19,6 +19,9 @@ class CniirIndexResource extends JsonResource
             'organisation' => $this->organisation->name,
             'quadrant' => $this->quadrant->name,
             'score' => number_format((float)$this->score, 2, '.', ''),
+            'pre_event_rtd_score' => number_format((float)$this->pre_event_rtd_score, 2, '.', ''),
+            'during_event_rtd_score' => number_format((float)$this->during_event_rtd_score, 2, '.', ''),
+            'post_event_rtd_score' => number_format((float)$this->post_event_rtd_score, 2, '.', ''),
             'date_calculated' => $this->created_at
         ];
     }

@@ -49,7 +49,7 @@ class CniirIndexService
         return $q_id;
     }
 
-    public static function saveCniirIndex($org_id, $quadrant_id, $user_id, $score){
+    public static function saveCniirIndex($org_id, $quadrant_id, $user_id, $score, $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score){
 
         $cniir = CniirIndex::where('org_id', $org_id)->first();
 
@@ -58,13 +58,22 @@ class CniirIndexService
 
            $score = $score / 2;
 
+           $pre_event_rtd_score = $pre_event_rtd_score / 2;
+
+           $during_event_rtd_score = $during_event_rtd_score / 2;
+
+           $post_event_rtd_score = $post_event_rtd_score / 2;
+
            $quadrant_id = self::getQuadrantFromScore($score);
 
            $cniir->update([
-            'org_id'        => $org_id,
-            'quadrant_id'   => $quadrant_id,
-            'user_id'       => $user_id,
-            'score'         => $score
+                'org_id'        => $org_id,
+                'quadrant_id'   => $quadrant_id,
+                'user_id'       => $user_id,
+                'score'         => $score,
+                'pre_event_rtd_score' => $pre_event_rtd_score,
+                'during_event_rtd_score' => $during_event_rtd_score,
+                'post_event_rtd_score' => $post_event_rtd_score
             ]);
 
             return $cniir;
@@ -74,7 +83,10 @@ class CniirIndexService
             'org_id'        => $org_id,
             'quadrant_id'   => $quadrant_id,
             'user_id'       => $user_id,
-            'score'         => $score
+            'score'         => $score,
+            'pre_event_rtd_score' => $pre_event_rtd_score,
+            'during_event_rtd_score' => $during_event_rtd_score,
+            'post_event_rtd_score' => $post_event_rtd_score
         ]);
     }
 

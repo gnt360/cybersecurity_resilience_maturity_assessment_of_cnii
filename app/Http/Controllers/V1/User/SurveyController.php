@@ -10,6 +10,7 @@ use App\Models\ResilienceMeasure;
 use App\Models\ResilienceFunction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ResilienceMeasureResponse;
 use App\Models\ResilienceFunctionCategory;
 use App\Http\Resources\V1\CniirIndexResource;
@@ -53,22 +54,27 @@ class SurveyController extends Controller
 
     public function storeResponse(Request $request)
     {
+        $responses_array = $request->input();
 
+       $questions_ids = array_keys($responses_array);
+
+        $user_id =  Auth::id();
         if($request->user_id == null){
             $this->errorResponse( "User Id is required", 'Validation errors', Response::HTTP_BAD_REQUEST);
         }
 
-        $count = count($request->rm_id);
+        $count = count($questions_ids);
+
 
         DB::beginTransaction();
 
-        for ($i=0; $i < $count; $i++) {
-          $response = new ResilienceMeasureResponse();
-          $response->rm_id = $request->rm_id[$i];
-          $response->rms_id = $request->rms_id[$i];
-          $response->user_id = $request->user_id;
-          $response->save();
-        }
+            for ($i=0; $i < $count; $i++) {
+                $response = new ResilienceMeasureResponse();
+                $response->rm_id = $questions_ids[$i];
+                $response->rms_id = $responses_array[$questions_ids[$i]];
+                $response->user_id = $user_id;
+                $response->save();
+            }
 
         DB::commit();
 
@@ -76,8 +82,9 @@ class SurveyController extends Controller
     }
 
 
-    public function showCniirIndex($user_id)
+    public function showCniirIndex()
     {
+        $user_id =  Auth::id();
         $user = User::find($user_id);
 
         $data = CniirIndex::where('org_id', $user->org_id)->latest()->first();

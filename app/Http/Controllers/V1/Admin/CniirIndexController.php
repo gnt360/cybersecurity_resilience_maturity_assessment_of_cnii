@@ -8,6 +8,7 @@ use App\Helpers\Computation;
 use App\Http\Requests\Request;
 use App\Helpers\CniirIndexService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ResilienceTemporalDimension;
 use App\Http\Resources\V1\CniirIndexResource;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,11 +44,14 @@ class CniirIndexController extends Controller
     }
 
 
-    public function cniirIndexComputation($user_id)
+    public function cniirIndexComputation()
     {
+        $user_id =  Auth::id();
+
         if($user_id == null || $user_id <= 0){
             return $this->errorResponse(null, 'Please provide a valid user id', Response::HTTP_BAD_REQUEST);
         }
+
 
         $user = User::find($user_id);
         if(!$user){
@@ -58,7 +62,11 @@ class CniirIndexController extends Controller
             return $this->errorResponse(null, 'No survey responses available for computation of cniir index', Response::HTTP_BAD_REQUEST);
         }
 
-        $score = Computation::calculateCNIIRIndex($user_id);
+        $pre_event_rtd_score = Computation::calculatePRTDI($user_id);
+        $during_event_rtd_score = Computation::calculateDRTDI($user_id);
+        $post_event_rtd_score = Computation::calculatePORTDI($user_id);
+
+        $score = Computation::calculateCNIIRIndex($user_id, $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score);
 
         if($score == 0){
             return $this->errorResponse(null, 'No survey taken for computation of cniir index', Response::HTTP_BAD_REQUEST);
@@ -67,7 +75,7 @@ class CniirIndexController extends Controller
 
         $quadrant_id = CniirIndexService::getQuadrantFromScore($score);
 
-        $data = CniirIndexService::saveCniirIndex($user->org_id, $quadrant_id,  $user_id, $score);
+        $data = CniirIndexService::saveCniirIndex($user->org_id, $quadrant_id, $user_id, $score, $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score);
 
         return $this->successResponse(new CniirIndexResource($data), 'CNIIR Index computed successfully', Response::HTTP_OK);
     }

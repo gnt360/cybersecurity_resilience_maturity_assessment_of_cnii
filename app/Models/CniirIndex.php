@@ -9,7 +9,7 @@ class CniirIndex extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['org_id', 'quadrant_id', 'score', 'user_id'];
+    protected $fillable = ['org_id', 'quadrant_id', 'score', 'user_id', 'pre_event_rtd_score', 'during_event_rtd_score', 'post_event_rtd_score'];
 
 
     public function organisation(){

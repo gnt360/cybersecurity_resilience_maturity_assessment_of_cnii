@@ -77,8 +77,8 @@ Route::prefix('v1')->group(function(){
             Route::get('/profile', [UserController::class, 'profile']);
             Route::get('/survey/{rf_id?}', [SurveyController::class, 'getMeasuresWithScales']);
             Route::post('/survey/storeResponse', [SurveyController::class, 'storeResponse']);
-            Route::get('/cniirIndex/computation/{user_id}', [CniirIndexController::class, 'cniirIndexComputation']);
-            Route::get('/cniirIndex/show/{user_id}', [SurveyController::class, 'showCniirIndex']);
+            Route::get('/cniirIndex/computation', [CniirIndexController::class, 'cniirIndexComputation']);
+            Route::get('/cniirIndex/show', [SurveyController::class, 'showCniirIndex']);
         });
 
     });

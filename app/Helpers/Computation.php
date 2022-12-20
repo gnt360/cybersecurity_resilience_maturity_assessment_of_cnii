@@ -16,7 +16,7 @@ class Computation
     }
 
     //CNII Resilience Index (CNIIRI)
-    public static function calculateCNIIRIndex($user_id){
+    public static function calculateCNIIRIndex($user_id, $prtdi, $drtdi, $portdi){
 
         $rtds = ResilienceTemporalDimension::all();
 
@@ -25,23 +25,32 @@ class Computation
         $portd = ResilienceTemporalDimension::where('name', 'Post-Event')->first();
 
         $cniiri = 0;
-        $check = false;
-        $prtdi = 0;
-        $drtdi = 0;
-        $portdi = 0;
-
-
-
-        $prtdi = self::calculateRTDIndex($prrtd->id, $user_id);
-
-        $drtdi = self::calculateRTDIndex($drrtd->id, $user_id);
-
-        $portdi = self::calculateRTDIndex($portd->id, $user_id);
 
         $cniiri = ($prrtd->weight * $prtdi) + ($drrtd->weight * $drtdi) + ($portd->weight * $portdi);
 
 
         return $cniiri;
+    }
+
+    public static function calculatePRTDI($user_id){
+
+        $prrtd = ResilienceTemporalDimension::where('name', 'Pre-Event')->first();
+
+        return self::calculateRTDIndex($prrtd->id, $user_id);
+    }
+
+    public static function calculateDRTDI($user_id){
+
+        $drrtd = ResilienceTemporalDimension::where('name', 'During-Event')->first();
+
+        return self::calculateRTDIndex($drrtd->id, $user_id);
+    }
+
+    public static function calculatePORTDI($user_id){
+
+        $portd = ResilienceTemporalDimension::where('name', 'Post-Event')->first();
+
+        return self::calculateRTDIndex($portd->id, $user_id);
     }
 
     //Resilience Temporal Dimension Index (RTDI)
