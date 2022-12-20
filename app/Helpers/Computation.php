@@ -86,8 +86,9 @@ class Computation
         return  $rtdi;
     }
 
+
     //Resilience Function Factor normalised (RFfN)
-    private static function calculateRFfn($rf_id, $user_id){
+    public static function calculateRFfn($rf_id, $user_id){
 
         $ids = ResilienceFunctionCategory::where('rf_id', $rf_id)->pluck('id');
 
@@ -172,16 +173,6 @@ class Computation
         return $rcfn;
     }
 
-    //Resilience Control Factor (RCf)
-    // public static function calculateRCF($r_control_id, $user_id){
-
-    //     $rm_ids = self::getRMIds4aGivingRC($r_control_id);
-
-    //     $rms = self::getRMRs4aGivingRC($rm_ids, $user_id);
-
-
-    //     return self::sumRMsWeights($rms);
-    // }
 
     private static function sumRMSWeights($data){
 

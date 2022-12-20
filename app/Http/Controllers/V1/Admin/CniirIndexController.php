@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ResilienceTemporalDimension;
 use App\Http\Resources\V1\CniirIndexResource;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\V1\CniirIndexAdminResource;
 
 class CniirIndexController extends Controller
 {
@@ -22,14 +23,13 @@ class CniirIndexController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(CniirIndexResource::collection(CniirIndex::all()));
+        return $this->successResponse(CniirIndexAdminResource::collection(CniirIndex::all()));
     }
 
     public function getConsolidatedIndex(){
 
-        $data = CniirIndexService::consolidateIndex();
+        return $this->successResponse(CniirIndexAdminResource::collection(CniirIndex::all()));
 
-        return $data;
     }
 
     /**
@@ -68,6 +68,14 @@ class CniirIndexController extends Controller
 
         $score = Computation::calculateCNIIRIndex($user_id, $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score);
 
+        //temporarily approach
+       $identify = Computation::calculateRFfn(12, $user_id);
+       $protect = Computation::calculateRFfn(13, $user_id);
+       $detect = Computation::calculateRFfn(14, $user_id);
+       $respond = Computation::calculateRFfn(15, $user_id);
+       $recover = Computation::calculateRFfn(16, $user_id);
+
+
         if($score == 0){
             return $this->errorResponse(null, 'No survey taken for computation of cniir index', Response::HTTP_BAD_REQUEST);
         }
@@ -75,7 +83,10 @@ class CniirIndexController extends Controller
 
         $quadrant_id = CniirIndexService::getQuadrantFromScore($score);
 
-        $data = CniirIndexService::saveCniirIndex($user->org_id, $quadrant_id, $user_id, $score, $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score);
+        $data = CniirIndexService::saveCniirIndex($user->org_id, $quadrant_id, $user_id, $score,
+        $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score,
+        $identify, $protect, $detect, $respond, $recover
+    );
 
         return $this->successResponse(new CniirIndexResource($data), 'CNIIR Index computed successfully', Response::HTTP_OK);
     }
