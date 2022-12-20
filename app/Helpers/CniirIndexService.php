@@ -18,7 +18,7 @@ class CniirIndexService
 
         $result = true;
 
-        $data1 = CniirIndex::where('user_id', $user_id)->latest()->first();
+        //$data1 = CniirIndex::where('user_id', $user_id)->latest()->first();
 
         $data2 = ResilienceMeasureResponse::where('user_id', $user_id)->latest()->first();
 
@@ -26,9 +26,9 @@ class CniirIndexService
             $result = false;
         }
 
-        if($data1 != null && $data2 != null){
-            $result = $data2->created_at > $data1->created_at;
-        }
+        // if($data1 != null && $data2 != null){
+        //     $result = $data2->created_at > $data1->created_at;
+        // }
 
         return $result;
     }
@@ -50,6 +50,25 @@ class CniirIndexService
     }
 
     public static function saveCniirIndex($org_id, $quadrant_id, $user_id, $score){
+
+        $cniir = CniirIndex::where('org_id', $org_id)->first();
+
+        if($cniir){
+           $score = $cniir->score + $score;
+
+           $score = $score / 2;
+
+           $quadrant_id = self::getQuadrantFromScore($score);
+
+           $cniir->update([
+            'org_id'        => $org_id,
+            'quadrant_id'   => $quadrant_id,
+            'user_id'       => $user_id,
+            'score'         => $score
+            ]);
+
+            return $cniir;
+        }
 
         return CniirIndex::create([
             'org_id'        => $org_id,

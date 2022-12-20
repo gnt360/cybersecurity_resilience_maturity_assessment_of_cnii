@@ -44,11 +44,15 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::prefix('v1')->group(function(){
 
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+        Route::apiResource('sector', SectorController::class);
+        Route::apiResource('organisation', OrganisationController::class);
+    });
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::group(['prefix' => 'admin', 'middleware' => 'is_admin', 'as' => 'admin.'], function() {
-            Route::apiResource('sector', SectorController::class);
-            Route::apiResource('organisation', OrganisationController::class);
+            // Route::apiResource('sector', SectorController::class);
+            // Route::apiResource('organisation', OrganisationController::class);
             Route::apiResource('resilienceTemporalDimension', ResilienceTemporalDimensionController::class);
             Route::apiResource('resilienceFunction', ResilienceFunctionController::class);
             Route::apiResource('resilienceFunctionCategory', ResilienceFunctionCategoryController::class);

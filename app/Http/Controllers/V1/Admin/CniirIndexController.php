@@ -60,8 +60,8 @@ class CniirIndexController extends Controller
 
         $score = Computation::calculateCNIIRIndex($user_id);
 
-        if($score == "N/A"){
-             return $this->errorResponse(null, 'No survey taken for computation of cniir index', Response::HTTP_BAD_REQUEST);
+        if($score == 0){
+            return $this->errorResponse(null, 'No survey taken for computation of cniir index', Response::HTTP_BAD_REQUEST);
         }
 
 

@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\V1\User;
 
+use App\Models\User;
+use App\Models\CniirIndex;
 use Illuminate\Http\Request;
 use App\Models\ResilienceControl;
 use App\Models\ResilienceMeasure;
 use App\Models\ResilienceFunction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\CniirIndexResource;
 use App\Models\ResilienceMeasureResponse;
 use App\Models\ResilienceFunctionCategory;
+use App\Http\Resources\V1\CniirIndexResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\V1\Survey\ResilienceFunctionResource;
-use App\Models\CniirIndex;
 
 class SurveyController extends Controller
 {
@@ -53,7 +54,6 @@ class SurveyController extends Controller
     public function storeResponse(Request $request)
     {
 
-
         if($request->user_id == null){
             $this->errorResponse( "User Id is required", 'Validation errors', Response::HTTP_BAD_REQUEST);
         }
@@ -78,9 +78,14 @@ class SurveyController extends Controller
 
     public function showCniirIndex($user_id)
     {
-        $data = CniirIndex::where('user_id', $user_id)->latest()->first();
+        $user = User::find($user_id);
 
-        return $this->successResponse(new CniirIndexResource($data));
+        $data = CniirIndex::where('org_id', $user->org_id)->latest()->first();
+
+        if($data){
+            return $this->successResponse(new CniirIndexResource($data));
+        }
+        return $this->successResponse("No record found");
     }
 
 }

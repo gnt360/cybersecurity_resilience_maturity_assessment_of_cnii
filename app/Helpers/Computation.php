@@ -18,29 +18,29 @@ class Computation
     //CNII Resilience Index (CNIIRI)
     public static function calculateCNIIRIndex($user_id){
 
-        $ids = ResilienceTemporalDimension::pluck('id');
+        $rtds = ResilienceTemporalDimension::all();
+
+        $prrtd = ResilienceTemporalDimension::where('name', 'Pre-Event')->first();
+        $drrtd = ResilienceTemporalDimension::where('name', 'During-Event')->first();
+        $portd = ResilienceTemporalDimension::where('name', 'Post-Event')->first();
 
         $cniiri = 0;
         $check = false;
+        $prtdi = 0;
+        $drtdi = 0;
+        $portdi = 0;
 
-        if($ids){
 
-            foreach($ids as $id){
 
-                $temp = Computation::calculateRTDIndex($id, $user_id);
+        $prtdi = self::calculateRTDIndex($prrtd->id, $user_id);
 
-                if($temp != "N/A"){
-                    $cniiri += $temp;
-                    $check = true;
-                }
+        $drtdi = self::calculateRTDIndex($drrtd->id, $user_id);
 
-            }
+        $portdi = self::calculateRTDIndex($portd->id, $user_id);
 
-            if(!$check){
-                return "N/A";
-            }
+        $cniiri = ($prrtd->weight * $prtdi) + ($drrtd->weight * $drtdi) + ($portd->weight * $portdi);
 
-        }
+
         return $cniiri;
     }
 
@@ -67,13 +67,12 @@ class Computation
             }
 
             if($count == 0){
-                return "N/A";
+                return 0;
             }
 
             $rtdi = $rffn / $count;
 
         }
-
 
         return  $rtdi;
     }
@@ -148,15 +147,16 @@ class Computation
 
         $rm_ids = self::getRMIds4aGivingRC($r_control_id);
 
-        $rms = self::getRMRs4aGivingRC($rm_ids, $user_id);
+        $rmrs = self::getRMRs4aGivingRC($rm_ids, $user_id);
 
-        $rcf = self::sumRMSWeights($rms);
 
-        $count = $rms->count();
+        $count = $rmrs->count();
 
         if($count == 0){
             return "N/A";
         }
+
+        $rcf = self::sumRMSWeights($rmrs);
 
         $rcfn = $rcf / (4 * $count);
 
@@ -181,11 +181,12 @@ class Computation
         return $sum;
     }
 
+    //ResilienceMeasureResponse  RMR
     private static function getRMRs4aGivingRC($rm_ids, $user_id){
 
         $data = ResilienceMeasureResponse::where('user_id', $user_id)
                 ->whereIn('rm_id', $rm_ids)
-                ->with(['resilienceMeasureScale', 'resilienceMeasureScale'])->get();
+                ->with(['resilienceMeasureScale', 'resilienceMeasure'])->get();
 
         return $data;
     }
