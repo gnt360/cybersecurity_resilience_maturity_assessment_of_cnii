@@ -18,7 +18,7 @@ class CniirIndexResource extends JsonResource
             'id' => $this->id,
             'organisation' => $this->organisation->name,
             'quadrant' => $this->quadrant->name,
-            'score' => $this->score,
+            'score' => number_format((float)$this->score, 2, '.', ''),
             'date_calculated' => $this->created_at
         ];
     }
