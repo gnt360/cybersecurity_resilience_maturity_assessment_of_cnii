@@ -4,9 +4,11 @@ namespace App\Http\Controllers\V1\User;
 
 use App\Models\User;
 use App\Models\CniirIndex;
+use App\Helpers\Computation;
 use Illuminate\Http\Request;
 use App\Models\ResilienceControl;
 use App\Models\ResilienceMeasure;
+use App\Helpers\CniirIndexService;
 use App\Models\ResilienceFunction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -59,6 +61,7 @@ class SurveyController extends Controller
        $questions_ids = array_keys($responses_array);
 
         $user_id =  Auth::id();
+
         if($request->user_id == null){
             $this->errorResponse( "User Id is required", 'Validation errors', Response::HTTP_BAD_REQUEST);
         }
@@ -80,8 +83,8 @@ class SurveyController extends Controller
 
         $result = self::cniirIndexComputation();
 
-        return  $result;
         //return $this->successResponse(null, 'Responses added successfully', Response::HTTP_CREATED);
+        return $this->successResponse($result, 'CNIIR Index computed successfully', Response::HTTP_OK);
     }
 
 
@@ -103,17 +106,17 @@ class SurveyController extends Controller
         $user_id =  Auth::id();
 
         if($user_id == null || $user_id <= 0){
-            return $this->errorResponse(null, 'Please provide a valid user id', Response::HTTP_BAD_REQUEST);
+            return 'Please provide a valid user id';
         }
 
 
         $user = User::find($user_id);
         if(!$user){
-            return $this->errorResponse(null, 'User not found', Response::HTTP_BAD_REQUEST);
+            return 'User not found';
         }
 
         if(!CniirIndexService::checkIfUserHasCompletedSurvey($user_id)){
-            return $this->errorResponse(null, 'No survey responses available for computation of cniir index', Response::HTTP_BAD_REQUEST);
+            return 'No survey responses available for computation of cniir index';
         }
 
         $pre_event_rtd_score = Computation::calculatePRTDI($user_id);
@@ -131,7 +134,7 @@ class SurveyController extends Controller
 
 
         if($score == 0){
-            return $this->errorResponse(null, 'No survey taken for computation of cniir index', Response::HTTP_BAD_REQUEST);
+            return 'No survey taken for computation of cniir index';
         }
 
 
@@ -142,7 +145,7 @@ class SurveyController extends Controller
         $identify, $protect, $detect, $respond, $recover
         );
 
-        return $this->successResponse(new CniirIndexResource($data), 'CNIIR Index computed successfully', Response::HTTP_OK);
+        return new CniirIndexResource($data);
     }
 
 }

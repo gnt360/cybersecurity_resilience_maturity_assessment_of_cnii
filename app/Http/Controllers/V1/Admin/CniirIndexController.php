@@ -52,7 +52,6 @@ class CniirIndexController extends Controller
             return $this->errorResponse(null, 'Please provide a valid user id', Response::HTTP_BAD_REQUEST);
         }
 
-
         $user = User::find($user_id);
         if(!$user){
             return $this->errorResponse(null, 'User not found', Response::HTTP_BAD_REQUEST);
