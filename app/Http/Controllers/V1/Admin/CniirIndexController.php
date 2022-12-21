@@ -86,7 +86,7 @@ class CniirIndexController extends Controller
         $data = CniirIndexService::saveCniirIndex($user->org_id, $quadrant_id, $user_id, $score,
         $pre_event_rtd_score, $during_event_rtd_score, $post_event_rtd_score,
         $identify, $protect, $detect, $respond, $recover
-    );
+        );
 
         return $this->successResponse(new CniirIndexResource($data), 'CNIIR Index computed successfully', Response::HTTP_OK);
     }
