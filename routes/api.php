@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function(){
             Route::get('/resilienceMeasureByRc/{id}/', [ResilienceMeasureController::class, 'getRMbyRCid']);
             Route::get('/resilienceMeasureScaleByRm/{id}/', [ResilienceMeasureScaleController::class, 'getRMSbyRMid']);
             Route::get('/cIndex/consolidated', [CniirIndexController::class, 'getConsolidatedIndex']);
+            Route::get('/users', [UserController::class, 'get_all_users']);
 
         });
 

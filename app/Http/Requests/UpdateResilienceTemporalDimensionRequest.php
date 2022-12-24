@@ -24,7 +24,8 @@ class UpdateResilienceTemporalDimensionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|unique:resilience_temporal_dimensions'
+            'name' => 'required|string|min:2|unique:resilience_temporal_dimensions',
+            'weight' => 'required|numeric'
         ];
     }
 

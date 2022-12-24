@@ -16,7 +16,8 @@ class ResilienceTemporalDimensionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'weight' => $this->weight
         ];
     }
 }
