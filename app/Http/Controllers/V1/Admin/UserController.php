@@ -14,4 +14,10 @@ class UserController extends Controller
     {
         return $this->successResponse( new UserResource(auth()->user()));
     }
+
+    public function get_all_users()
+    {
+        $users = User::where('is_admin', 0)->get();
+        return $this->successResponse(UserResource::collection($users));
+    }
 }

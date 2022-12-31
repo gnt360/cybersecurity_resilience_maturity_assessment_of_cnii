@@ -18,7 +18,7 @@ class ResilienceMeasureScaleController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(ResilienceMeasureScaleResource::collection(ResilienceMeasureScale::paginate()));
+        return $this->successResponse(ResilienceMeasureScaleResource::collection(ResilienceMeasureScale::all()));
     }
 
     /**
@@ -55,6 +55,7 @@ class ResilienceMeasureScaleController extends Controller
         $resilienceMeasureScale = ResilienceMeasureScale::where('rm_id', $rmId)->get();
         return $this->successResponse(ResilienceMeasureScaleResource::collection($resilienceMeasureScale));
     }
+
     /**
      * Update the specified resource in storage.
      *

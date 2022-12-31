@@ -18,7 +18,7 @@ class SectorController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(SectorResourse::collection(Sector::paginate()));
+        return $this->successResponse(SectorResourse::collection(Sector::all()));
     }
 
     /**

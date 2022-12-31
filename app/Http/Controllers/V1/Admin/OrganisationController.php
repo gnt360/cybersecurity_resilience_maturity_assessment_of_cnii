@@ -18,7 +18,7 @@ class OrganisationController extends Controller
      */
     public function index()
     {
-       return $this->successResponse(OrganisationResourse::collection(Organisation::paginate()));
+       return $this->successResponse(OrganisationResourse::collection(Organisation::all()));
     }
 
     /**
@@ -71,5 +71,12 @@ class OrganisationController extends Controller
         $organisation->delete();
 
         return response('Deleted', Response::HTTP_NO_CONTENT);
+    }
+
+    public function organisationsBySectorID($sector_id)
+    {
+        $data = Organisation::where('sector_id', $sector_id)->get();
+
+        return $this->successResponse(OrganisationResourse::collection($data));
     }
 }

@@ -29,7 +29,7 @@ class UpdateQuadrantRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|unique:quadrants',
+            'name' => 'required|string|min:2',
             'low_limit' => 'required|numeric',
             'upper_limit' => 'required|numeric'
         ];
@@ -47,7 +47,6 @@ class UpdateQuadrantRequest extends FormRequest
     {
         return [
             'name.required' => 'Quadrant name is required',
-            'name.unique' => 'Quadrant name already exist',
             'name.min' => 'Enter a valid quadrant name',
             'name.string' => 'Quadrant name must be a string',
             'low_limit.numeric' => 'Low limit must be a number',

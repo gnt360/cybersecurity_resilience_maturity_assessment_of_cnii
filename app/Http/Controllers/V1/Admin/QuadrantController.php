@@ -18,7 +18,7 @@ class QuadrantController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(QuadrantResource::collection(Quadrant::paginate()));
+        return $this->successResponse(QuadrantResource::collection(Quadrant::all()));
     }
 
     /**

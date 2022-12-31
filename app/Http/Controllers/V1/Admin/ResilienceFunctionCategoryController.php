@@ -18,7 +18,7 @@ class ResilienceFunctionCategoryController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(ResilienceFunctionCategoryResource::collection(ResilienceFunctionCategory::paginate()));
+        return $this->successResponse(ResilienceFunctionCategoryResource::collection(ResilienceFunctionCategory::all()));
     }
 
     /**

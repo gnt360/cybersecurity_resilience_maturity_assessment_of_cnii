@@ -17,7 +17,7 @@ class ResilienceMeasure extends Model
 
     public function resilienceMeasureScales()
     {
-        return $this->hasMany(ResilienceMeasureScale::class);
+        return $this->hasMany(ResilienceMeasureScale::class, 'rm_id');
     }
 
     public function resilienceMeasureScalesByName()

@@ -18,7 +18,7 @@ class ResilienceTemporalDimensionController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(ResilienceTemporalDimensionResource::collection(ResilienceTemporalDimension::paginate()));
+        return $this->successResponse(ResilienceTemporalDimensionResource::collection(ResilienceTemporalDimension::all()));
     }
 
     /**

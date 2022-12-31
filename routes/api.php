@@ -4,9 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\V1\Admin\UserController;
+use App\Http\Controllers\V1\User\SurveyController;
 use App\Http\Controllers\V1\Admin\SectorController;
 use App\Http\Controllers\V1\Admin\QuadrantController;
 use App\Http\Controllers\V1\Admin\CniirIndexController;
+use App\Http\Controllers\V1\Admin\ComputationController;
 use App\Http\Controllers\V1\Admin\OrganisationController;
 use App\Http\Controllers\V1\Admin\ResilienceControlController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureController;
@@ -15,6 +17,7 @@ use App\Http\Controllers\V1\Admin\ResilienceMeasureScaleController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureResponseController;
 use App\Http\Controllers\V1\Admin\ResilienceFunctionCategoryController;
 use App\Http\Controllers\V1\Admin\ResilienceTemporalDimensionController;
+use App\Models\Organisation;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,11 +44,15 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::prefix('v1')->group(function(){
 
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+        Route::apiResource('sector', SectorController::class);
+        Route::apiResource('organisation', OrganisationController::class);
+    });
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::group(['prefix' => 'admin', 'middleware' => 'is_admin', 'as' => 'admin.'], function() {
-            Route::apiResource('sector', SectorController::class);
-            Route::apiResource('organisation', OrganisationController::class);
+            // Route::apiResource('sector', SectorController::class);
+            // Route::apiResource('organisation', OrganisationController::class);
             Route::apiResource('resilienceTemporalDimension', ResilienceTemporalDimensionController::class);
             Route::apiResource('resilienceFunction', ResilienceFunctionController::class);
             Route::apiResource('resilienceFunctionCategory', ResilienceFunctionCategoryController::class);
@@ -61,15 +68,25 @@ Route::prefix('v1')->group(function(){
             Route::get('/resilienceControlByRfc/{id}/', [ResilienceControlController::class, 'getRCbyRFCid']);
             Route::get('/resilienceMeasureByRc/{id}/', [ResilienceMeasureController::class, 'getRMbyRCid']);
             Route::get('/resilienceMeasureScaleByRm/{id}/', [ResilienceMeasureScaleController::class, 'getRMSbyRMid']);
+            Route::get('/cIndex/consolidated', [CniirIndexController::class, 'getConsolidatedIndex']);
+            Route::get('/users', [UserController::class, 'get_all_users']);
 
         });
 
 
          Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
             Route::get('/profile', [UserController::class, 'profile']);
+            Route::get('/survey/{rf_id?}', [SurveyController::class, 'getMeasuresWithScales']);
+            Route::post('/survey/storeResponse', [SurveyController::class, 'storeResponse']);
+            Route::get('/cniirIndex/computation', [CniirIndexController::class, 'cniirIndexComputation']);
+            Route::get('/cniirIndex/show', [SurveyController::class, 'showCniirIndex']);
         });
 
     });
+
+    Route::get('/sectors', [SectorController::class, 'index']);
+    Route::get('/organisations', [OrganisationController::class, 'index']);
+    Route::get('/organisationsBySectorID/{sector_id}', [OrganisationController::class, 'organisationsBySectorID']);
 
 });
 

@@ -18,7 +18,7 @@ class ResilienceFunction extends Model
 
     public function resilienceFunctionCategorys()
     {
-        return $this->hasMany(ResilienceFunctionCategory::class);
+        return $this->hasMany(ResilienceFunctionCategory::class, 'rf_id');
     }
 
     public function resilienceFunctionCategorysByName()
