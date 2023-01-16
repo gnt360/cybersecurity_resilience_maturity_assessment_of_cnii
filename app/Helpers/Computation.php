@@ -199,69 +199,72 @@ class Computation
 
 
     public static function rfcfnByOrg($rfc_id, $name){
-        $user_ids = User::pluck('id');
 
-        //$rms = ResilienceMeasureResponse::whereIn('user_id', $user_ids)->with('organisation')->get();
+        $user_ids = ResilienceMeasureResponse::distinct()->pluck('user_id');
 
-        //$rfcs = ResilienceFunctionCategory::where('rf_id', $rf_id)->pluck('id', 'name');
+        $users = User::with(['organisation', 'organisation.sector'])->whereIn('id', $user_ids)->get();
 
-        $orgs = Organisation::all();
+        $collection = collect();
 
-            $collection = collect();
+        foreach($users as $user){
 
-            foreach($orgs as $org){
-                $rfcfn = self::calculateRFCfnByOrg($rfc_id, $org->id);
+            $rfcfn = self::calculateRFCfnByOrg($rfc_id, $user->org_id);
 
-                if($rfcfn != 'N/A')
-                {
-                    $collection->push(['org' => $org->name, 'rfcfn' => $rfcfn, 'name' => $name]);
-                }
+            if($rfcfn != 'N/A')
+            {
 
-
-
+                $collection->push(
+                    ['sector' => $user->organisation->sector->name,
+                    'org' => $user->organisation->name,
+                    'code' => $user->organisation->code,
+                    'rfcfn' => $rfcfn,
+                    'name' => $name
+                ]);
             }
-
-            return $collection;
-
-    }
-
-     //Resilience Function Factor normalised (RFfN) By organisation
-     public static function calculateRFfnByOrg($rf_id, $org_id){
-
-        $ids = ResilienceFunctionCategory::where('rf_id', $rf_id)->pluck('id');
-
-        $rffn = 0;
-        $rfcn = 0;
-        $count = 0;
-
-        if($ids){
-
-            foreach($ids as $id){
-
-                $temp = self::calculateRFCfnByOrg($id, $org_id);
-
-                if($temp != "N/A"){
-                    $rfcn += $temp;
-                    $count++;
-                }
-
-            }
-
-            if($count == 0){
-                return "N/A";
-            }
-
-            $rffn = $rfcn / $count;
 
         }
 
-        return  $rffn;
+        return $collection;
+
     }
 
-    //Resilience Function Category Factor normalised (RFCfN) by Organisation
-    private static function calculateRFCfnByOrg($rcf_id, $org_id){
+    //  //Resilience Function Factor normalised (RFfN) By organisation
+    //  public static function calculateRFfnByOrg($rf_id, $org_id){
 
-        $ids = ResilienceControl::where('rfc_id', $rcf_id)->pluck('id');
+    //     $ids = ResilienceFunctionCategory::where('rf_id', $rf_id)->pluck('id');
+
+    //     $rffn = 0;
+    //     $rfcn = 0;
+    //     $count = 0;
+
+    //     if($ids){
+
+    //         foreach($ids as $id){
+
+    //             $temp = self::calculateRFCfnByOrg($id, $org_id);
+
+    //             if($temp != "N/A"){
+    //                 $rfcn += $temp;
+    //                 $count++;
+    //             }
+
+    //         }
+
+    //         if($count == 0){
+    //             return "N/A";
+    //         }
+
+    //         $rffn = $rfcn / $count;
+
+    //     }
+
+    //     return  $rffn;
+    // }
+
+    //Resilience Function Category Factor normalised (RFCfN) by Organisation
+    private static function calculateRFCfnByOrg($rfc_id, $org_id){
+
+        $ids = ResilienceControl::where('rfc_id', $rfc_id)->pluck('id');
 
         $rfcfn = 0;
         $rcfn = 0;
@@ -315,7 +318,7 @@ class Computation
     //ResilienceMeasureResponse  RMR by organisation
     private static function getRMRs4aGivingRCByOrg($rm_ids, $org_id){
 
-        $data = ResilienceMeasureResponse::where('user_id', $org_id)
+        $data = ResilienceMeasureResponse::where('org_id', $org_id)
                 ->whereIn('rm_id', $rm_ids)
                 ->with(['resilienceMeasureScale', 'resilienceMeasure'])->get();
 
