@@ -10,6 +10,7 @@ use App\Http\Controllers\V1\Admin\QuadrantController;
 use App\Http\Controllers\V1\Admin\CniirIndexController;
 use App\Http\Controllers\V1\Admin\ComputationController;
 use App\Http\Controllers\V1\Admin\OrganisationController;
+use App\Http\Controllers\V1\Admin\ReportController;
 use App\Http\Controllers\V1\Admin\ResilienceControlController;
 use App\Http\Controllers\V1\Admin\ResilienceMeasureController;
 use App\Http\Controllers\V1\Admin\ResilienceFunctionController;
@@ -70,6 +71,12 @@ Route::prefix('v1')->group(function(){
             Route::get('/resilienceMeasureScaleByRm/{id}/', [ResilienceMeasureScaleController::class, 'getRMSbyRMid']);
             Route::get('/cIndex/consolidated', [CniirIndexController::class, 'getConsolidatedIndex']);
             Route::get('/users', [UserController::class, 'get_all_users']);
+
+            Route::get('/report/identity', [ReportController::class, 'identity']);
+            Route::get('/report/protect', [ReportController::class, 'protect']);
+            Route::get('/report/detect', [ReportController::class, 'detect']);
+            Route::get('/report/respond', [ReportController::class, 'respond']);
+            Route::get('/report/recover', [ReportController::class, 'recover']);
 
         });
 

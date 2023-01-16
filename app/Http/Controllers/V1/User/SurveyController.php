@@ -60,7 +60,7 @@ class SurveyController extends Controller
 
        $questions_ids = array_keys($responses_array);
 
-        $user_id =  Auth::id();
+        $user =  Auth::user();
 
         if($request->user_id == null){
             $this->errorResponse( "User Id is required", 'Validation errors', Response::HTTP_BAD_REQUEST);
@@ -75,7 +75,8 @@ class SurveyController extends Controller
                 $response = new ResilienceMeasureResponse();
                 $response->rm_id = $questions_ids[$i];
                 $response->rms_id = $responses_array[$questions_ids[$i]];
-                $response->user_id = $user_id;
+                $response->user_id = $user->id;
+                $response->org_id = $user->org_id;
                 $response->save();
             }
 
