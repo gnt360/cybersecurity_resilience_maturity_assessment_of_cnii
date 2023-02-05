@@ -4,6 +4,8 @@ namespace App\Http\Controllers\V1\Admin;
 
 use stdClass;
 use App\Models\User;
+use App\Models\Quadrant;
+use App\Models\CniirIndex;
 use App\Helpers\Computation;
 use App\Models\Organisation;
 use Illuminate\Http\Request;
@@ -178,5 +180,33 @@ class ReportController extends Controller
         }
 
         return $this->successResponse($response, 'success', Response::HTTP_OK);
+    }
+
+    public function organizations_per_quadrant(){
+
+        $ciir_indicies = CniirIndex::all();
+
+        $data = [
+            'Q1'  => $ciir_indicies->where('quadrant_id', 1)->count(), //1 IS ID OF Q1 IN THE DB
+            'Q2'  => $ciir_indicies->where('quadrant_id', 2)->count(), //2 IS ID OF Q2 IN THE DB
+            'Q3'  => $ciir_indicies->where('quadrant_id', 3)->count(), //3 IS ID OF Q3 IN THE DB
+            'Q4'  => $ciir_indicies->where('quadrant_id', 4)->count(), //4 IS ID OF Q4 IN THE DB
+        ];
+
+        return $this->successResponse($data, 'organisations per quadrant', Response::HTTP_OK);
+    }
+
+    public function sectors_per_quadrant(){
+
+        $ciir_indicies = CniirIndex::all();
+
+        $data = [
+            'Q1'  => Organisation::whereIn('id', $ciir_indicies->where('quadrant_id', 1)->pluck('org_id'))->distinct('sector_id')->count(), //1 IS ID OF Q1 IN THE DB
+            'Q2'  => Organisation::whereIn('id', $ciir_indicies->where('quadrant_id', 2)->pluck('org_id'))->distinct('sector_id')->count(), //2 IS ID OF Q2 IN THE DB
+            'Q3'  => Organisation::whereIn('id', $ciir_indicies->where('quadrant_id', 3)->pluck('org_id'))->distinct('sector_id')->count(), //3 IS ID OF Q3 IN THE DB
+            'Q4'  => Organisation::whereIn('id', $ciir_indicies->where('quadrant_id', 4)->pluck('org_id'))->distinct('sector_id')->count(), //4 IS ID OF Q4 IN THE DB
+        ];
+
+        return $this->successResponse($data, 'sectors per quadrant', Response::HTTP_OK);
     }
 }

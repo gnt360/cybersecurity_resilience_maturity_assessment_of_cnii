@@ -77,6 +77,8 @@ Route::prefix('v1')->group(function(){
             Route::get('/report/detect', [ReportController::class, 'detect']);
             Route::get('/report/respond', [ReportController::class, 'respond']);
             Route::get('/report/recover', [ReportController::class, 'recover']);
+            Route::get('/report/organizations_per_quadrant', [ReportController::class, 'organizations_per_quadrant']);
+            Route::get('/report/sectors_per_quadrant', [ReportController::class, 'sectors_per_quadrant']);
 
         });
 
